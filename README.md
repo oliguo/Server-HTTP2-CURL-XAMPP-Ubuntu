@@ -1,6 +1,6 @@
 # Server-HTTP2-CURL-XAMPP-Ubuntu
     This is the memo practice when I go to implement the new APNS HTTP2 API and found my server not support and try to do some alter-way.
-    Document detail it run in the Ubuntu 18.04/16.04, XAMPP5 or XAMPP7.
+    Document detail it run in the Ubuntu 18.04, XAMPP5 or XAMPP7.
 
 # Env to check the CURL whether it support HTTPS or not
 
@@ -59,12 +59,16 @@
     $ locate libcurl.so.4
       /opt/lampp/lib/libcurl.so.4
       /opt/lampp/lib/libcurl.so.4.4.0
+      /usr/lib/x86_64-linux-gnu/libcurl.so.4
+      /usr/lib/x86_64-linux-gnu/libcurl.so.4.5.0
+      /usr/local/lib/libcurl.so.4
+      /usr/local/lib/libcurl.so.4.6.0
     $ ls -l /opt/lampp/lib/libcurl.so.4
       lrwxrwxrwx 1 root root 16 May 31  2017 /opt/lampp/lib/libcurl.so.4 -> libcurl.so.4.4.0
-    $ ls -l /usr/local/lib/libcurl.so.4
-      lrwxrwxrwx 1 0 0 16 Mar  6 15:52 /usr/local/lib/libcurl.so.4 -> libcurl.so.4.5.0
     $ sudo cp /opt/lampp/lib/libcurl.so.4 /opt/lampp/lib/libcurl.so.4.bk
     $ sudo rm /opt/lampp/lib/libcurl.so.4
-    $ ln -s /usr/local/lib/libcurl.so.4.5.0 /opt/lampp/lib/libcurl.so.4 
+    $ ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4 /opt/lampp/lib/libcurl.so.4 
+    $ sudo /opt/lampp/lampp restart
+    
 [Reference](https://stackoverflow.com/a/38896967)
     
