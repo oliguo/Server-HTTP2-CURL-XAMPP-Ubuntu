@@ -71,4 +71,69 @@
     $ sudo /opt/lampp/lampp restart
     
 [Reference](https://stackoverflow.com/a/38896967)
+
+### Try to Call then no HTTP error now
+    $ curl https://api.push.apple.com:443/3/device/ -k
+    {"reason":"MethodNotAllowed"}
+    $ /opt/lampp/bin/curl https://api.push.apple.com:443/3/device/ -k
+    {"reason":"MethodNotAllowed"}
     
+## Call APNS API then will be received the PUSH
+    $ curl -vs  \
+        --header "apns-topic: com.xxx.app"  
+        --header "apns-push-type: alert"  
+        --cert "/absolute_path/apns_cert.pem:your_encrypted_pem_password"  \
+        --data '{"aps":{"alert":"test","badge":1}}'  \
+        --http2 https://api.push.apple.com:443/3/device/4F15267EE72CAA67DBDC3F6DE2173544E2F16A4FA3521C4EB3F3DBCA974AD331 \
+        -k
+      
+        *   Trying 17.188.163.12...
+        * TCP_NODELAY set
+        * Connected to api.push.apple.com (17.188.163.12) port 443 (#0)
+        * ALPN, offering h2
+        * ALPN, offering http/1.1
+        * Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+        * successfully set certificate verify locations:
+        *   CAfile: /etc/ssl/certs/ca-certificates.crt
+          CApath: none
+        * TLSv1.2 (OUT), TLS header, Certificate Status (22):
+        * TLSv1.2 (OUT), TLS handshake, Client hello (1):
+        * TLSv1.2 (IN), TLS handshake, Server hello (2):
+        * TLSv1.2 (IN), TLS handshake, Certificate (11):
+        * TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+        * TLSv1.2 (IN), TLS handshake, Request CERT (13):
+        * TLSv1.2 (IN), TLS handshake, Server finished (14):
+        * TLSv1.2 (OUT), TLS handshake, Certificate (11):
+        * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+        * TLSv1.2 (OUT), TLS handshake, CERT verify (15):
+        * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+        * TLSv1.2 (OUT), TLS handshake, Finished (20):
+        * TLSv1.2 (IN), TLS change cipher, Change cipher spec (1):
+        * TLSv1.2 (IN), TLS handshake, Finished (20):
+        * SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+        * ALPN, server accepted to use h2
+        * Server certificate:
+        *  subject: CN=api.push.apple.com; OU=management:idms.group.533599; O=Apple Inc.; ST=California; C=US
+        *  start date: Mar 14 17:50:10 2019 GMT
+        *  expire date: Apr 12 17:50:10 2021 GMT
+        *  issuer: CN=Apple IST CA 2 - G1; OU=Certification Authority; O=Apple Inc.; C=US
+        *  SSL certificate verify result: unable to get local issuer certificate (20), continuing anyway.
+        * Using HTTP2, server supports multi-use
+        * Connection state changed (HTTP/2 confirmed)
+        * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+        * Using Stream ID: 1 (easy handle 0xb48070)
+        > POST /3/device/4F15267EE72CAA67DBDC3F6DE2173544E2F16Axxxxxxxxxxx HTTP/2
+        > Host: api.push.apple.com
+        > User-Agent: curl/7.63.0
+        > Accept: */*
+        > apns-topic: com.xxx.app
+        > apns-push-type: alert
+        > Content-Length: 34
+        > Content-Type: application/x-www-form-urlencoded
+        > 
+        * Connection state changed (MAX_CONCURRENT_STREAMS == 1000)!
+        * We are completely uploaded and fine
+        < HTTP/2 200 
+        < apns-id: xxxxxx-1C94-4457-092A-746C6B32368B
+        < 
+        * Connection #0 to host api.push.apple.com left intact
